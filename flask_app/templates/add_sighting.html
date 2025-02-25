@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<body style="background-color: #f9f9f9; padding: 20px;">
+    <h1 style="text-align: center; color: #333;">Report a Sighting</h1>
+    <form action="/sightings/new" method="POST" style="width: 400px; margin: auto; background: #fff; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+        <label for="location" style="display: block; margin-bottom: 10px;">Location:</label>
+        <input type="text" name="location" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+        
+        <label for="num_sasquatches" style="display: block; margin-bottom: 10px;">Number of Sasquatches:</label>
+        <input type="number" name="num_sasquatches" required min="1" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+        
+        <label for="what_happened" style="display: block; margin-bottom: 10px;">What Happened:</label>
+        <textarea name="what_happened" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;"></textarea>
+        
+        <label for="date_of_sighting" style="display: block; margin-bottom: 10px;">Date of Sighting:</label>
+        <input type="date" name="date_of_sighting" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+
+        
+        <button type="submit" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: #fff; border: none; border-radius: 5px;">Report</button>
+    </form>
+</body>
+{% endblock %}

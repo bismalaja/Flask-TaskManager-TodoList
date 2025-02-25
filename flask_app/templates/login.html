@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f0f8ff; margin:auto; padding: 0; text-align: center;">
+    <h1 style="margin-top: 50px; color: #333;">Sasquatch sightings tracker</h1>
+    <form action="/login" method="POST" style="padding: 5%; margin: 5% ;background: #fff; border: 1px solid #ccc; border-radius: 10px;">
+        <label for="email" style="display: block; text-align: left; margin-bottom: 10px;">Email:</label>
+        <input type="email" name="email" required style="width: 90%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+        
+        <label for="password" style="display: block; text-align: left; margin-bottom: 10px;">Password:</label>
+        <input type="password" name="password" required style="width: 90%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+        
+        <button type="submit" style="padding: 10px 20px; display: block; margin: 0 auto; background: rgb(73, 148, 158); color: #fff; border: none; border-radius: 5px; cursor: pointer;">Login</button>
+    </form>
+    <p style="margin-top: 15px;">Don't have an account? <a href="/registerpage" style="color:  rgba(40, 54, 185, 0.993);">Register here</a></p>
+</body>
+</html>

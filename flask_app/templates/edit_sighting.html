@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<body style="background-color: #f9f9f9; padding: 20px; margin: 0;">
+    <div style="max-width: 600px; margin: 50px auto; padding: 20px; background-color: #fff; border: 1px solid #ddd; border-radius: 10px;">
+        <h1 style="text-align: center; color: #333;">Edit Sighting</h1>
+        <form action="/sightings/edit/{{ sighting.id }}" method="POST">
+            <!-- Location Field -->
+            <label for="location" style="display: block; margin-bottom: 10px; font-weight: bold;">Location:</label>
+            <input type="text" name="location" id="location" value="{{ sighting.location }}" required 
+                   style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+
+            <!-- Date of Sighting -->
+            <label for="date_of_sighting" style="display: block; margin-bottom: 10px; font-weight: bold;">Date of Sighting:</label>
+            <input type="date" name="date_of_sighting" id="date_of_sighting" value="{{ sighting.date_of_sighting }}" required
+                   style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+
+            <!-- Number of Sasquatches -->
+            <label for="num_sasquatches" style="display: block; margin-bottom: 10px; font-weight: bold;">Number of Sasquatches:</label>
+            <input type="number" name="num_sasquatches" id="num_sasquatches" min="1" value="{{ sighting.num_sasquatches }}" required
+                   style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
+
+            <!-- What Happened -->
+            <label for="what_happened" style="display: block; margin-bottom: 10px; font-weight: bold;">What Happened:</label>
+            <textarea name="what_happened" id="what_happened" rows="5" required
+                      style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">{{ sighting.what_happened }}</textarea>
+
+            <!-- Submit Button -->
+            <button type="submit" style="width: 100%; padding: 10px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; margin-top: 15px;">
+                Update Sighting
+            </button>
+
+            <!-- Cancel Button -->
+            <a href="/dashboard" style="display: block; text-align: center; margin-top: 10px; color: #007bff; text-decoration: none;">
+                Cancel
+            </a>
+        </form>
+    </div>
+</body>
+{% endblock %}

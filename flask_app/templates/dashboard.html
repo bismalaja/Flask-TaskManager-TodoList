@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h1 class="text-center mb-4">Sasquatch Sightings</h1>
+            
+            <!-- "Report" button aligned to the right -->
+            <div class="text-right mb-3">
+                <a href="/sightings/new" class="btn btn-success" style="background: rgb(73, 148, 158)">Report a Sighting</a>
+            </div>
+
+            <!-- Responsive table container -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped mx-auto">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Location</th>
+                            <th>Date of Sighting</th>
+                            <th>Reported By</th>
+                            <th>Skeptics</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if sightings %}
+                            {% for sighting in sightings %}
+                            <tr>
+                                <td>{{ sighting['location'] }}</td>
+                                <td>{{ sighting['date_of_sighting'] }}</td>
+                                <td>{{ sighting['first_name'] }} {{ sighting['last_name'] }}</td>
+                                <td>{{ sighting['num_skeptics'] }}</td>
+                                <td>
+                                    <a href="/sightings/{{ sighting['id'] }}" class="text-primary">View</a>
+                                    {% if sighting['users_id'] == session['user_id'] %}
+                                        | <a href="/sightings/edit/{{ sighting['id'] }}" class="text-warning">Edit</a>
+                                        | <form action="/sightings/delete/{{ sighting['id'] }}" method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-danger" style="margin-left: 30%;">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center">No sightings available</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
