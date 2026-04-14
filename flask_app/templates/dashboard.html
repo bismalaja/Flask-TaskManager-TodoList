@@ -4,54 +4,80 @@
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-body">
-            <h1 class="text-center mb-4">Sasquatch Sightings</h1>
-            
-            <!-- "Report" button aligned to the right -->
+            <h1 class="text-center mb-4">Task Manager</h1>
+
+            <form class="form-inline mb-3" method="GET" action="/dashboard">
+                <input
+                    class="form-control mr-2"
+                    type="text"
+                    name="search"
+                    placeholder="Search by title"
+                    value="{{ search_term }}"
+                >
+                <select class="form-control mr-2" name="status">
+                    <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All Statuses</option>
+                    <option value="todo" {% if status_filter == 'todo' %}selected{% endif %}>To Do</option>
+                    <option value="in-progress" {% if status_filter == 'in-progress' %}selected{% endif %}>In Progress</option>
+                    <option value="done" {% if status_filter == 'done' %}selected{% endif %}>Done</option>
+                </select>
+                <button class="btn btn-primary mr-2" type="submit">Apply</button>
+                <a class="btn btn-outline-secondary" href="/dashboard">Reset</a>
+            </form>
+
             <div class="text-right mb-3">
-                <a href="/sightings/new" class="btn btn-success" style="background: rgb(73, 148, 158)">Report a Sighting</a>
+                <a href="/tasks/new" class="btn btn-success">Add Task</a>
             </div>
 
-            <!-- Responsive table container -->
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped mx-auto">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Location</th>
-                            <th>Date of Sighting</th>
-                            <th>Reported By</th>
-                            <th>Skeptics</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if sightings %}
-                            {% for sighting in sightings %}
-                            <tr>
-                                <td>{{ sighting['location'] }}</td>
-                                <td>{{ sighting['date_of_sighting'] }}</td>
-                                <td>{{ sighting['first_name'] }} {{ sighting['last_name'] }}</td>
-                                <td>{{ sighting['num_skeptics'] }}</td>
-                                <td>
-                                    <a href="/sightings/{{ sighting['id'] }}" class="text-primary">View</a>
-                                    {% if sighting['users_id'] == session['user_id'] %}
-                                        | <a href="/sightings/edit/{{ sighting['id'] }}" class="text-warning">Edit</a>
-                                        | <form action="/sightings/delete/{{ sighting['id'] }}" method="POST" class="d-inline">
-                                            <button type="submit" class="btn btn-sm btn-danger" style="margin-left: 30%;">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="5" class="text-center">No sightings available</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
+            {% if tasks %}
+                {% for task in tasks %}
+                    <div class="card mb-4 border">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">{{ task['title'] }}</h5>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <th style="width: 180px;">Due Date</th>
+                                            <td>{{ task['due_date'] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Priority</th>
+                                            <td>{{ task['priority']|capitalize }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Status</th>
+                                            <td>{{ task['status']|capitalize }}</td>
+                                        </tr>
+                                        {% if task['status'] != 'done' and task['suggested_steps'] %}
+                                            <tr>
+                                                <th>Suggested Steps</th>
+                                                <td>
+                                                    <ul class="mb-0 pl-3">
+                                                        {% for step in task['suggested_steps'][:2] %}
+                                                            <li>{{ step }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="mt-3">
+                                <a href="/tasks/{{ task['id'] }}" class="btn btn-sm btn-primary">View</a>
+                                <a href="/tasks/edit/{{ task['id'] }}" class="btn btn-sm btn-warning text-white">Edit</a>
+                                <form action="/tasks/delete/{{ task['id'] }}" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No tasks found.</p>
+            {% endif %}
         </div>
     </div>
 </div>

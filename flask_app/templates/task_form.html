@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 640px;">
+    <div class="card shadow">
+        <div class="card-body">
+            <h1 class="text-center mb-4">{% if form_mode == 'edit' %}Edit Task{% else %}Add Task{% endif %}</h1>
+            <form action="{% if form_mode == 'edit' %}/tasks/edit/{{ task['id'] }}{% else %}/tasks/new{% endif %}" method="POST">
+                <label for="title">Title</label>
+                <input type="text" class="form-control mb-3" name="title" value="{{ task['title'] if task else '' }}" required>
+
+                <label for="description">Description</label>
+                <textarea class="form-control mb-3" name="description" rows="4" required>{{ task['description'] if task else '' }}</textarea>
+
+                <label for="due_date">Due Date</label>
+                <input type="date" class="form-control mb-3" name="due_date" value="{{ task['due_date'] if task else '' }}" required>
+
+                <label for="priority">Priority</label>
+                <select class="form-control mb-3" name="priority" required>
+                    <option value="low" {% if task and task['priority'] == 'low' %}selected{% endif %}>Low</option>
+                    <option value="medium" {% if not task or task['priority'] == 'medium' %}selected{% endif %}>Medium</option>
+                    <option value="high" {% if task and task['priority'] == 'high' %}selected{% endif %}>High</option>
+                </select>
+
+                <label for="status">Status</label>
+                <select class="form-control mb-4" name="status" required>
+                    <option value="todo" {% if not task or task['status'] == 'todo' %}selected{% endif %}>To Do</option>
+                    <option value="in-progress" {% if task and task['status'] == 'in-progress' %}selected{% endif %}>In Progress</option>
+                    <option value="done" {% if task and task['status'] == 'done' %}selected{% endif %}>Done</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary">{% if form_mode == 'edit' %}Update Task{% else %}Create Task{% endif %}</button>
+                <a href="/dashboard" class="btn btn-link">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
