@@ -1,14 +1,17 @@
-# Flask Task Manager
+# Flask Task Manager / Todo List
 
 A simple but powerful Task Management application built with Flask and SQLite. This application allows users to manage their tasks, with an added feature of AI-powered suggested steps to break down complex tasks.
 
 ## Features
 
-- **User Management**: A simplified user system (currently with a single mock user).
+- **User Authentication**: Register, login, and logout flows with password hashing (`Flask-Bcrypt`) and session-based access control.
 - **Task Management**: Create, Read, Update, and Delete (CRUD) operations for tasks.
+- **Per-User Task Isolation**: Each user can only view and manage their own tasks.
 - **Task Filtering and Search**: Filter tasks by status (To Do, In Progress, Done) and search for tasks by title.
-- **AI-Powered Suggested Steps**: For each task, the application can suggest a series of steps to complete the task, using the Ollama service.
+- **AI-Powered Suggested Steps**: Tasks can include AI-generated suggested steps via Ollama; steps are refreshed when key task fields change and cleared when a task is marked done.
+- **Validation and Feedback**: Server-side validation and flash messages for user and task forms.
 - **Responsive UI**: A clean and simple user interface built with Bootstrap.
+- **Unit Tests**: Lightweight tests for task/user validation and Ollama step parsing behavior.
 
 ## Project Structure
 
@@ -16,18 +19,20 @@ The project is structured as a standard Flask application with the following lay
 
 ```
 .
-├── app.db
 ├── app.py
+├── app.db
 ├── flask_app
+│   ├── __init__.py
 │   ├── config
 │   │   └── sqliteconnection.py
 │   ├── controllers
 │   │   ├── tasks.py
 │   │   └── users.py
-│   ├── __init__.py
 │   ├── models
-│   │   └── task.py
+│   │   ├── task.py
+│   │   └── user.py
 │   ├── services
+│   │   ├── __init__.py
 │   │   └── ollama_steps.py
 │   ├── static
 │   │   └── main.css
@@ -38,15 +43,21 @@ The project is structured as a standard Flask application with the following lay
 │       ├── register.html
 │       ├── task_details.html
 │       └── task_form.html
+└── tests
+    ├── test_ollama_steps.py
+    ├── test_task_model.py
+    └── test_user_model.py
 ```
 
 - **app.py**: The main entry point for the Flask application.
-- **flask_app/config/sqliteconnection.py**: Handles the connection to the SQLite database.
+- **app.db**: Local SQLite database file, created automatically at runtime.
+- **flask_app/config/sqliteconnection.py**: Handles SQLite connections and initializes/migrates required tables.
 - **flask_app/controllers/**: Contains the route handlers for different parts of the application (users and tasks).
-- **flask_app/models/**: Contains the data models for the application (e.g., the `Task` model).
+- **flask_app/models/**: Contains the data models for the application (`Task` and `User`).
 - **flask_app/services/ollama_steps.py**: A service that integrates with the Ollama AI to provide suggested steps for tasks.
 - **flask_app/static/**: Contains static assets like CSS and JavaScript files.
 - **flask_app/templates/**: Contains the HTML templates for the application.
+- **tests/**: Unit tests for validation rules and AI step parsing helpers.
 
 ## Getting Started
 
@@ -54,6 +65,8 @@ The project is structured as a standard Flask application with the following lay
 
 - Python 3.x
 - Flask
+- Flask-Bcrypt
+- pytest (for tests)
 - (Optional) Ollama for AI features
 
 ### Installation
@@ -72,15 +85,10 @@ The project is structured as a standard Flask application with the following lay
 
 3.  **Install the required packages:**
     ```bash
-    pip install Flask
+    pip install Flask Flask-Bcrypt pytest
     ```
 
-4.  **Install testing dependency (for unit tests):**
-    ```bash
-    pip install pytest
-    ```
-
-5.  **Initialize the database:**
+4.  **Initialize the database:**
     The application will automatically create and initialize the `app.db` SQLite database file when you first run it.
 
 ## Usage
@@ -120,6 +128,7 @@ To use the AI features, you need to have Ollama installed and running on your ma
 - `OLLAMA_MODEL`: The name of the Ollama model you want to use.
 - `OLLAMA_MODEL_CANDIDATES`: A comma-separated list of fallback models to try if the primary model is not available.
 - `OLLAMA_TIMEOUT_SECONDS`: The timeout for requests to the Ollama service (defaults to 20 seconds).
+- `OLLAMA_MODEL_CACHE_SECONDS`: How long to cache resolved model selection before refreshing (defaults to 300 seconds).
 
 If Ollama is not available, the application will still function normally, but the suggested steps feature will be disabled.
 
