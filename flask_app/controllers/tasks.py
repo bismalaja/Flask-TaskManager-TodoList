@@ -1,11 +1,12 @@
 from flask import flash, redirect, render_template, request, session
-
 from flask_app import app
 from flask_app.models.task import Task
 from flask_app.services.ollama_steps import generate_suggested_steps
+from .users import login_required
 
 
 @app.route("/dashboard", methods=["GET"])
+@login_required
 def dashboard():
     status_filter = request.args.get("status", "all")
     search_term = request.args.get("search", "").strip()
@@ -20,6 +21,7 @@ def dashboard():
 
 
 @app.route("/tasks/new", methods=["GET", "POST"])
+@login_required
 def add_task():
     if request.method == "POST":
         if not Task.validate_task(request.form):
@@ -54,6 +56,7 @@ def add_task():
 
 
 @app.route("/tasks/<int:task_id>", methods=["GET"])
+@login_required
 def view_task(task_id):
     task = Task.get_by_id(task_id, session["user_id"])
     if not task:
@@ -64,6 +67,7 @@ def view_task(task_id):
 
 
 @app.route("/tasks/edit/<int:task_id>", methods=["GET", "POST"])
+@login_required
 def edit_task(task_id):
     task = Task.get_by_id(task_id, session["user_id"])
     if not task:

@@ -75,7 +75,12 @@ The project is structured as a standard Flask application with the following lay
     pip install Flask
     ```
 
-4.  **Initialize the database:**
+4.  **Install testing dependency (for unit tests):**
+    ```bash
+    pip install pytest
+    ```
+
+5.  **Initialize the database:**
     The application will automatically create and initialize the `app.db` SQLite database file when you first run it.
 
 ## Usage
@@ -88,6 +93,20 @@ The project is structured as a standard Flask application with the following lay
 2.  **Open your browser and navigate to `http://127.0.0.1:5000`**.
 
 You will be taken to the main dashboard where you can start adding and managing your tasks.
+
+## Running Unit Tests
+
+Run the lightweight unit test suite with:
+
+```bash
+python -m pytest -q
+```
+
+To run the tests with verbose output:
+
+```bash
+python -m pytest -v
+```
 
 ## AI Integration
 

@@ -32,7 +32,12 @@
               <a class="nav-item nav-link" style="font-family: Arial, Helvetica, sans-serif;" href="{{ url_for('dashboard') }}">Tasks</a>
             </div>
             <div class="navbar-nav">
-              <a class="nav-item nav-link" style="font-family: Arial, Helvetica, sans-serif;" href="{{ url_for('logout') }}">Reset Session</a>
+              {% if current_user %}
+                <a class="nav-item nav-link" style="font-family: Arial, Helvetica, sans-serif;" href="{{ url_for('logout') }}">Logout</a>
+              {% else %}
+                <a class="nav-item nav-link" style="font-family: Arial, Helvetica, sans-serif;" href="{{ url_for('login_page') }}">Login</a>
+                <a class="nav-item nav-link" style="font-family: Arial, Helvetica, sans-serif;" href="{{ url_for('register_page') }}">Register</a>
+              {% endif %}
             </div>
           </div>
         </div>

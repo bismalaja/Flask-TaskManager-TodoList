@@ -1,8 +1,5 @@
-# Python
 *.pyc
 __pycache__/
 .venv/
-
-# Database
 *.db
 *.sqlite3

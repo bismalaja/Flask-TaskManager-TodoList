@@ -13,6 +13,16 @@ def _get_connection():
 
 def init_db():
     schema = """
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
     CREATE TABLE IF NOT EXISTS tasks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
@@ -23,11 +33,12 @@ def init_db():
         status TEXT NOT NULL,
         suggested_steps TEXT,
         created_at TEXT NOT NULL,
-        updated_at TEXT NOT NULL
+        updated_at TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users (id)
     );
     """
     with _get_connection() as connection:
-        connection.execute(schema)
+        connection.executescript(schema)
 
         columns = connection.execute("PRAGMA table_info(tasks);").fetchall()
         column_names = {column[1] for column in columns}

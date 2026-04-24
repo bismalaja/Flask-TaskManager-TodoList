@@ -1,21 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body style="font-family: Arial, sans-serif; background-color: #f0f8ff; margin:auto; padding: 0; text-align: center;">
-    <h1 style="margin-top: 50px; color: #333;">Local Task Manager</h1>
-    <form action="/login" method="POST" style="padding: 5%; margin: 5% ;background: #fff; border: 1px solid #ccc; border-radius: 10px;">
-        <label for="email" style="display: block; text-align: left; margin-bottom: 10px;">Email:</label>
-        <input type="email" name="email" required style="width: 90%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
-        
-        <label for="password" style="display: block; text-align: left; margin-bottom: 10px;">Password:</label>
-        <input type="password" name="password" required style="width: 90%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;">
-        
-        <button type="submit" style="padding: 10px 20px; display: block; margin: 0 auto; background: rgb(73, 148, 158); color: #fff; border: none; border-radius: 5px; cursor: pointer;">Login</button>
-    </form>
-    <p style="margin-top: 15px;">Don't have an account? <a href="/registerpage" style="color:  rgba(40, 54, 185, 0.993);">Register here</a></p>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Login</h3>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                {% if category == 'login' %}
+                                    <div class="alert alert-danger">{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <form action="/login" method="POST">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p>Don't have an account? <a href="/registerpage">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
